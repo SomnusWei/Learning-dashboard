@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>学习台剪藏</title>
+  <style>
+    body { width: 320px; margin: 0; padding: 16px; font-family: -apple-system, "Segoe UI", sans-serif; font-size: 14px; }
+    h3 { margin: 0 0 12px; font-size: 16px; }
+    label { display: block; margin-bottom: 4px; color: #666; font-size: 12px; }
+    input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; margin-bottom: 10px; font-size: 13px; }
+    textarea { resize: vertical; min-height: 60px; }
+    button { width: 100%; padding: 10px; background: #4A90E2; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    button:hover { opacity: 0.9; }
+    button.secondary { background: #f0f0f0; color: #333; margin-top: 8px; }
+    .tip { font-size: 11px; color: #999; margin-top: 8px; line-height: 1.5; }
+    .ok { color: #10b981; font-size: 13px; margin-top: 8px; }
+    .err { color: #ef4444; font-size: 13px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h3>📚 学习台剪藏</h3>
+  <label>API 地址</label>
+  <input id="apiBase" value="https://your-domain.com:8443/api/v1" />
+  <label>API Token</label>
+  <input id="token" type="password" placeholder="登录后从设置页获取 Token" />
+  <button id="saveBtn">保存设置</button>
+  <div class="tip">
+    Token 获取：登录工作台 → 设置页 → 复制 API Token。<br />
+    支持右键「剪藏选中文字/当前页面」到待办。
+  </div>
+  <div id="msg"></div>
+</body>
+<script src="popup.js"></script>
+</html>

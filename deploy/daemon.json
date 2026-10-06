@@ -1,0 +1,15 @@
+{
+  "data-root": "/vol3/docker",
+  "live-restore": true,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-file": "5",
+    "max-size": "100m"
+  },
+  "registry-mirrors": [
+    "https://docker.1ms.run",
+    "https://docker.m.daocloud.io",
+    "https://hub.rat.dev",
+    "https://dockerpull.com"
+  ]
+}

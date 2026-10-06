@@ -1,0 +1,6 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+# 回退到 PP-OCRv3（PP-OCRv6 small 对相似字形识别较差）
+rapidocr-onnxruntime==1.4.3
+Pillow==10.4.0

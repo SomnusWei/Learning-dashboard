@@ -1,0 +1,10 @@
+# 允许前端 invoke 调用自定义命令
+[[permission]]
+identifier = "allow-capture-and-ocr"
+description = "允许调用 capture_and_ocr 命令（截图指定窗口并发送到 OCR）"
+commands.allow = ["capture_and_ocr"]
+
+[[permission]]
+identifier = "allow-open-log-dir"
+description = "允许调用 open_log_dir 命令（打开日志目录）"
+commands.allow = ["open_log_dir"]

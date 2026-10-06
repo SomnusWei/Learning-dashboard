@@ -1,0 +1,101 @@
+# 个人学习工作台 · Docker Compose
+# 飞牛 NAS 部署：/trim/learning-dashboard/docker-compose.yml
+# 启动：docker compose up -d
+# 停止：docker compose down
+# 日志：docker compose logs -f backend
+# 重建：docker compose build backend && docker compose up -d backend
+
+name: learning-dashboard
+
+services:
+  # ============ PostgreSQL ============
+  postgres:
+    image: postgres:16-alpine
+    container_name: ld-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: learning
+      POSTGRES_USER: learning
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-learning_change_me}
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U learning -d learning"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ld-net
+
+  # ============ 后端 API ============
+  backend:
+    build: ./backend
+    container_name: ld-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://learning:${DB_PASSWORD:-learning_change_me}@postgres:5432/learning
+      JWT_SECRET: ${JWT_SECRET:-please_change_me_in_production}
+      APP_ENV: prod
+      TZ: Asia/Shanghai
+      FEISHU_APP_ID: ${FEISHU_APP_ID:-}
+      FEISHU_APP_SECRET: ${FEISHU_APP_SECRET:-}
+      OCR_SERVICE_URL: http://ocr:8866
+    volumes:
+      - ./data/uploads:/app/data/uploads
+      - ./data/backgrounds:/app/data/backgrounds
+    expose:
+      - "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ocr:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    networks:
+      - ld-net
+
+  # ============ PaddleOCR (CPU 版) ============
+  ocr:
+    build: ./ocr-service
+    container_name: ld-ocr
+    restart: unless-stopped
+    expose:
+      - "8866"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      # 缓存 PaddleOCR 模型，避免重建容器后重新下载
+      - ./data/ocr_models:/root/.paddleocr
+    networks:
+      - ld-net
+
+  # ============ Nginx (前端静态 + 反向代理) ============
+  nginx:
+    image: nginx:alpine
+    container_name: ld-nginx
+    restart: unless-stopped
+    ports:
+      # NAS 主机 8443 → 容器 443，对外唯一入口
+      - "8443:443"
+      # 内网开发时可暴露 80（生产可注释）
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./frontend/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+    networks:
+      - ld-net
+
+networks:
+  ld-net:
+    driver: bridge

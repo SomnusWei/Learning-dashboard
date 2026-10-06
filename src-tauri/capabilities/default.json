@@ -1,0 +1,21 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "默认权限（含远程 URL 授权）",
+  "windows": ["main"],
+  "local": true,
+  "remote": {
+    "urls": ["https://your-domain.com:8443/*", "http://localhost:8443/*", "http://127.0.0.1:8443/*"]
+  },
+  "permissions": [
+    "core:default",
+    "core:event:default",
+    "core:window:default",
+    "core:webview:default",
+    "notification:default",
+    "global-shortcut:default",
+    "log:default",
+    "allow-capture-and-ocr",
+    "allow-open-log-dir"
+  ]
+}

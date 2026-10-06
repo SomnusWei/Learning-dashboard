@@ -1,0 +1,64 @@
+# 环境变量（实际部署时修改）
+.env
+.env.local
+
+# 敏感信息文件（IP/账号/密码/密钥等）
+测试nas部署ssh信息.txt
+github.txt
+b64.txt
+*_ssh*.txt
+*_secret*.txt
+*_credential*.txt
+*password*
+*.pem
+*.key
+.env.production
+
+# 数据库数据
+data/pgdata/
+data/uploads/
+data/backgrounds/
+
+# SSL 证书
+nginx/ssl/
+*.pem
+*.key
+
+# 后端
+**/__pycache__/
+backend/.venv/
+backend/venv/
+*.pyc
+
+# 前端
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+*.tsbuildinfo
+
+# Tauri 构建产物
+src-tauri/target/
+src-tauri/gen/
+
+# 部署备份/压缩包
+deploy/*.tar.gz
+deploy/*.zip
+
+# 内部规划文档（含部署细节）
+个人学习工作台-*.md
+
+# 测试截图
+test_capture*.png
+*_capture*.png
+
+# 打包临时
+fpk/
+_up_/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
